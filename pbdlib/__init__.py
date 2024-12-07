@@ -14,12 +14,11 @@ from .mtmm import MTMM, VBayesianGMM, VMBayesianGMM, VBayesianHMM
 try:
 	import gui
 except ImportError as e:
-	print "Could not import gui: {0}".format(e.message)
-	print "run : sudo apt-get install tkinter"
+	print (f"Could not import gui: {e.message}")
+	print ("run : sudo apt-get install tkinter")
 except:
-	print "Unexpected error:", sys.exc_info()[0]
+	print ("Unexpected error:", sys.exc_info()[0])
 	raise
 
-import utils
-import plot
-
+from .utils import *
+from .plot import *

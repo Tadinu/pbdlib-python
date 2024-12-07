@@ -1,10 +1,10 @@
 import numpy as np
-from model import *
-from functions import multi_variate_normal
+from .model import *
+from .functions import multi_variate_normal
 from scipy.linalg import block_diag
 
 from termcolor import colored
-from mvn import MVN
+from .mvn import MVN
 
 
 class GMM(Model):
@@ -161,18 +161,17 @@ class GMM(Model):
 			if not get_mvn:
 				return np.concatenate([self.mu[i] for i in q]), block_diag(*[self.sigma[i] for i in q])
 			else:
-                                if t is not None and R is not None:
-                                        Rb = block_diag(R, R)
-                                        mvn = MVN()
-                                        mvn.mu = np.concatenate([self.mu[i].dot(Rb) + np.hstack([t, np.zeros(len(t))]) for i in q])
-                                        mvn._sigma = block_diag(*[self.sigma[i].dot(Rb) for i in q])
-                                        mvn._lmbda = block_diag(*[self.lmbda[i] for i in q])
-                                else:
-                                        mvn = MVN()
-                                        mvn.mu = np.concatenate([self.mu[i] for i in q])
-                                        mvn._sigma = block_diag(*[self.sigma[i] for i in q])
-                                        mvn._lmbda = block_diag(*[self.lmbda[i] for i in q])
-
+				if t is not None and R is not None:
+					Rb = block_diag(R, R)
+					mvn = MVN()
+					mvn.mu = np.concatenate([self.mu[i].dot(Rb) + np.hstack([t, np.zeros(len(t))]) for i in q])
+					mvn._sigma = block_diag(*[self.sigma[i].dot(Rb) for i in q])
+					mvn._lmbda = block_diag(*[self.lmbda[i] for i in q])
+				else:
+					mvn = MVN()
+					mvn.mu = np.concatenate([self.mu[i] for i in q])
+					mvn._sigma = block_diag(*[self.sigma[i] for i in q])
+					mvn._lmbda = block_diag(*[self.lmbda[i] for i in q])
 				return mvn
 		else:
 			if not get_mvn:
@@ -350,10 +349,10 @@ class GMM(Model):
 							'acj,aic->aij', np.einsum('aic,ac->aci', dx, GAMMA2), dx) + reg_finish
 
 					if verbose:
-						print colored('Converged after %d iterations: %.3e' % (it, LL[it]), 'red', 'on_white')
+						print('Converged after %d iterations: %.3e' % (it, LL[it]), 'red', 'on_white')
 					return GAMMA
 		if verbose:
-			print "GMM did not converge before reaching max iteration. Consider augmenting the number of max iterations."
+			print("GMM did not converge before reaching max iteration. Consider augmenting the number of max iterations.")
 		return GAMMA
 
 

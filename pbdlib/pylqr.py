@@ -191,7 +191,7 @@ class PyLQR(object):
 			# print Sc.real
 			return Sc.real
 		except:
-			print "Singular matrix"
+			print("Singular matrix")
 
 
 	def set_hmm_problem(self, model, q, horizon=None, force_model=None, use_force=True):

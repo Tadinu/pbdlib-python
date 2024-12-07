@@ -9,5 +9,5 @@ setup(name='pbdlib',
       author_email='emmanuel.pignat@idiap.ch',
       license='MIT',
       packages=find_packages(),
-      install_requires = ['numpy','scipy','matplotlib', 'sklearn', 'dtw', 'jupyter', 'enum', 'termcolor'],
+      install_requires = ['numpy','scipy','matplotlib', 'scikit-learn', 'dtw', 'jupyter', 'termcolor'],
       zip_safe=False)

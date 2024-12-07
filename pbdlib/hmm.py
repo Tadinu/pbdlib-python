@@ -20,7 +20,7 @@ class HMM(GMM):
 	@property
 	def init_priors(self):
 		if self._init_priors is None:
-			print colored("HMM init priors not defined, initializing to uniform", 'red', 'on_white')
+			print("HMM init priors not defined, initializing to uniform")
 			self._init_priors = np.ones(self.nb_states) / self.nb_states
 
 		return self._init_priors
@@ -32,7 +32,7 @@ class HMM(GMM):
 	@property
 	def trans(self):
 		if self._trans is None:
-			print colored("HMM transition matrix not defined, initializing to uniform", 'red', 'on_white')
+			print("HMM transition matrix not defined, initializing to uniform")
 			self._trans = np.ones((self.nb_states, self.nb_states)) / self.nb_states
 		return self._trans
 
@@ -83,8 +83,8 @@ class HMM(GMM):
 		:return:
 		"""
 
-                if init_priors is None:
-                        init_priors = self.init_priors
+		if init_priors is None:
+				init_priors = self.init_priors
 
 		nb_data, dim = demo.shape if isinstance(demo, np.ndarray) else demo['x'].shape
 
@@ -103,7 +103,7 @@ class HMM(GMM):
 				PSI[i, t] = np.argmax(logDELTA[:, t - 1] + np.log(self.Trans[:, i] + realmin * reg))
 				logDELTA[i, t] = np.max(logDELTA[:, t - 1] + np.log(self.Trans[:, i] + realmin * reg)) + logB[i, t]
 
- 		assert not np.any(np.isnan(logDELTA)), "Nan values"
+		assert not np.any(np.isnan(logDELTA)), "Nan values"
 
 		# backtracking
 		q = [0 for i in range(nb_data)]
@@ -111,10 +111,10 @@ class HMM(GMM):
 		for t in range(nb_data - 2, -1, -1):
 			q[t] = PSI[q[t + 1], t + 1]
 
-                if return_value:
-                        return q, np.max(logDELTA[:, -1])
-                else:
-		        return q
+		if return_value:
+			return q, np.max(logDELTA[:, -1])
+		else:
+			return q
 
 	def split_kbins(self, demos):
 		t_sep = []
@@ -135,8 +135,8 @@ class HMM(GMM):
 		return np.concatenate(t_resp)
 
 	def obs_likelihood(self, demo=None, dep=None, marginal=None, sample_size=200, demo_idx=None):
-                if isinstance(demo, np.ndarray):
-		        sample_size = demo.shape[0]
+		if isinstance(demo, np.ndarray):
+			sample_size = demo.shape[0]
 
 		# emission probabilities
 		B = np.ones((self.nb_states, sample_size))
@@ -206,8 +206,8 @@ class HMM(GMM):
 			(can be used for time-series regression)
 		:return:
 		"""
-                if init_priors is None:
-                        init_priors = self.init_priors
+		if init_priors is None:
+			init_priors = self.init_priors
 
 		if isinstance(demo, np.ndarray):
 			sample_size = demo.shape[0]
@@ -437,7 +437,7 @@ class HMM(GMM):
 
 			# Check for convergence
 			if it > nb_min_steps and LL[it] - LL[it - 1] < max_diff_ll:
-				print "EM converges"
+				print("EM converges")
 				if end_cov:
 					for i in range(self.nb_states):
 						# recompute covariances without regularization
@@ -462,7 +462,7 @@ class HMM(GMM):
 				return True
 
 
-		print "EM did not converge"
+		print("EM did not converge")
 		return False
 
 	def score(self, demos, marginal=None):
